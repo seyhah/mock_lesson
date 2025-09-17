@@ -1,0 +1,13 @@
+quarto render sentiment_report.ipynb --to html
+
+quarto render sentiment_report.ipynb --to pptx
+
+ quarto render sentiment_analysis.ipynb --to html
+
+ quarto preview sentiment_analysis.ipynb --to revealjs --execute --embed-resources --no-cache --metadata code-tools: true
+
+presentpy sentiment_analysis.ipynb
+
+quarto render sentiment_analysis (1).qmd --to html
+
+quarto render sentiment_analysis (1).qmd --to html

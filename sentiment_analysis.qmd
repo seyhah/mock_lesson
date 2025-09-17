@@ -1,0 +1,131 @@
+---
+title: "Customer Comments Sentiment Analysis"
+format: 
+  revealjs:
+    theme: simple
+    transition: fade
+    code-fold: false   # show code
+    code-line-numbers: true
+---
+
+
+# Introduction
+
+This report analyzes customer comments using an AI model (`gpt-oss:20b` via Ollama).  
+The pipeline performs the following steps:
+
+1. Load raw comments data.  
+2. Run **sentiment classification** (Positive, Negative, Neutral).  
+3. Visualize the distribution of sentiments.  
+4. Generate an **AI-powered summary** of the results.  
+
+---
+
+# Step 1 — Import Libraries
+
+We begin by importing the required Python libraries.  
+- **pandas** for data handling.  
+- **matplotlib** for visualization.  
+- **ollama** for running the AI model locally.  
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+from ollama import chat
+```
+
+---
+
+# Step 2 — Load Data
+
+We load customer comments stored in `comments.csv`. Each row contains one customer comment.  
+
+```{python}
+df = pd.read_csv("comments.csv")
+df.head()
+```
+
+---
+
+# Step 3 — Sentiment Analysis with Ollama
+
+We use the AI model `gpt-oss:20b` (running on Ollama) to classify each comment as **Positive, Negative, or Neutral**.  
+Each comment is sent as a prompt to the model, and the response is stored.  
+
+```{python}
+results = []
+
+for comment in df['comment']:
+    prompt = f"Classify this customer comment as Positive, Negative, or Neutral:\n\n{comment}"
+    resp = chat(model="gpt-oss:20b", messages=[{"role": "user", "content": prompt}])
+    sentiment = resp['message']['content'].strip()
+    results.append({"comment": comment, "sentiment": sentiment})
+
+sentiment_df = pd.DataFrame(results)
+sentiment_df.to_csv("sentiment_results.csv", index=False)
+print("Saved sentiment_results.csv")
+sentiment_df.head()
+```
+
+---
+
+# Step 4 — Reload Processed Sentiment Data
+
+We reload the saved results for further analysis.  
+
+```{python}
+df = pd.read_csv("sentiment_results.csv")
+df.head()
+```
+
+---
+
+# Step 5 — Visualize Sentiment Distribution
+
+We plot the distribution of sentiment categories.  
+This gives a quick overview of how customers feel about the service or product.  
+
+```{python}
+sentiment_counts = df['sentiment'].value_counts()
+
+plt.figure(figsize=(6,4))
+sentiment_counts.plot(kind='bar', color=['green','red','gray'])
+plt.title("Sentiment Distribution")
+plt.xlabel("Sentiment")
+plt.ylabel("Number of Comments")
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+# Step 6 — AI Summary of Sentiment Results
+
+Finally, we ask `gpt-oss:20b` to summarize the sentiment results in natural language.  
+
+```{python}
+prompt = f"""
+Here are the sentiment counts from customer comments:
+
+{sentiment_counts.to_dict()}
+
+Write a short summary describing the results.
+"""
+
+response = chat(model="gpt-oss:20b", messages=[{"role": "user", "content": prompt}])
+summary = response['message']['content']
+print(summary)
+```
+
+---
+
+# Conclusion
+
+This analysis demonstrates how **AI + Python + Quarto** can be combined to:  
+
+- Automate text classification.  
+- Generate visual summaries.  
+- Provide natural-language insights.  
+
+Such a workflow can be applied to any text-based dataset (e.g., surveys, feedback, reviews) to quickly extract **actionable intelligence**.  

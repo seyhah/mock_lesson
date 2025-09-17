@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="sentiment_analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="sentiment_analysis_files/libs/clipboard/clipboard.min.js"></script>
 <script src="sentiment_analysis_files/libs/quarto-html/tabby.min.js"></script>
 <script src="sentiment_analysis_files/libs/quarto-html/popper.min.js"></script>
 <script src="sentiment_analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
@@ -9,7 +9,7 @@
 <link href="sentiment_analysis_files/libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.31">
 
-  <title>Cambodia University of Technology and Science (CamTech)</title>
+  <title>Customer Comments Sentiment Analysis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,7 +28,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="sentiment_analysis_files/libs/revealjs/dist/theme/quarto-f563837468303362081e247dddd440d0.css">
+  <link rel="stylesheet" href="sentiment_analysis_files/libs/revealjs/dist/theme/quarto-2c1b5f745a11cfad616ebade4a4a7d24.css">
   <link href="sentiment_analysis_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="sentiment_analysis_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="sentiment_analysis_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -120,23 +120,25 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Cambodia University of Technology and Science (CamTech)</h1>
+  <h1 class="title">Customer Comments Sentiment Analysis</h1>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="customer-comments-sentiment-analysis" class="slide level2">
-<h2>Customer Comments Sentiment Analysis</h2>
-<p><em>By: Ven Seyhah, PhD</em></p>
-<p><em>Date: 19 Setember 2025</em></p>
-<p>This notebook analyzes customer comments using an AI model (<code>gpt-oss:20b</code> via Ollama).<br>
+<section>
+<section id="introduction" class="title-slide slide level1 center">
+<h1>Introduction</h1>
+<p>This report analyzes customer comments using an AI model (<code>gpt-oss:20b</code> via Ollama).<br>
 The pipeline performs the following steps:</p>
 <ol type="1">
 <li>Load raw comments data.<br>
@@ -148,50 +150,247 @@ The pipeline performs the following steps:</p>
 <li>Generate an <strong>AI-powered summary</strong> of the results.</li>
 </ol>
 </section>
-<section id="step-1-import-libraries" class="slide level2">
-<h2>Step 1 — Import Libraries</h2>
-<p>We begin by importing the required Python libraries. - <strong>pandas</strong> for handling and manipulating structured data (tables). - <strong>matplotlib</strong> for plotting and visualizing the results.<br>
-- <strong>ollama</strong> to connect and interact with the local AI model (gpt-oss:20b).</p>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="step-1-import-libraries" class="title-slide slide level1 center">
+<h1>Step 1 — Import Libraries</h1>
+<p>We begin by importing the required Python libraries.<br>
+- <strong>pandas</strong> for data handling.<br>
+- <strong>matplotlib</strong> for visualization.<br>
+- <strong>ollama</strong> for running the AI model locally.</p>
 </section>
-<section id="step-2-load-data" class="slide level2">
-<h2>Step 2 — Load Data</h2>
-<p>We load customer comments stored in <code>comments.csv</code>. * Each row contains one comment. * df.head() displays the first few rows so we can confirm the data is loaded correctly.</p>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="step-2-load-data" class="title-slide slide level1 center">
+<h1>Step 2 — Load Data</h1>
+<p>We load customer comments stored in <code>comments.csv</code>. Each row contains one customer comment.</p>
+<div id="bca52f52" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>The product quality is amazing and I'm very sa...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Customer service was slow and unhelpful.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Delivery was on time, nothing special.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>The app keeps crashing and it's frustrating.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Great prices and very fast shipping.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
-<section id="step-3-sentiment-analysis-with-ollama" class="slide level2">
-<h2>Step 3 — Sentiment Analysis with Ollama</h2>
-<p>Here we run AI-powered sentiment analysis on each comment.</p>
-<h3 id="explanation-of-the-code">Explanation of the code:</h3>
-<ol type="1">
-<li>We loop through every comment in the dataset.</li>
-<li>For each comment, we create a prompt asking the AI model to classify it as Positive, Negative, or Neutral.</li>
-<li>The AI’s response is captured using chat().</li>
-<li>The classified sentiment is stored along with the original comment in a results list.</li>
-<li>We convert the results list into a DataFrame (sentiment_df) and save it to sentiment_results.csv for later use.</li>
-</ol>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="step-3-sentiment-analysis-with-ollama" class="title-slide slide level1 center">
+<h1>Step 3 — Sentiment Analysis with Ollama</h1>
+<p>We use the AI model <code>gpt-oss:20b</code> (running on Ollama) to classify each comment as <strong>Positive, Negative, or Neutral</strong>.<br>
+Each comment is sent as a prompt to the model, and the response is stored.</p>
+<div id="7335cc2c" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-stdout">
+<pre><code>Saved sentiment_results.csv</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">comment</th>
+<th data-quarto-table-cell-role="th">sentiment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>The product quality is amazing and I'm very sa...</td>
+<td>Positive</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Customer service was slow and unhelpful.</td>
+<td>Negative</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Delivery was on time, nothing special.</td>
+<td>Neutral</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>The app keeps crashing and it's frustrating.</td>
+<td>Negative</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Great prices and very fast shipping.</td>
+<td>Positive</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
-<section id="step-4-reload-processed-sentiment-data" class="slide level2">
-<h2>Step 4 — Reload Processed Sentiment Data</h2>
-<p>We reload the processed results from sentiment_results.csv. This ensures we always work with the cleaned dataset (comment + sentiment).</p>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="step-4-reload-processed-sentiment-data" class="title-slide slide level1 center">
+<h1>Step 4 — Reload Processed Sentiment Data</h1>
+<p>We reload the saved results for further analysis.</p>
+<div id="764c752b" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">comment</th>
+<th data-quarto-table-cell-role="th">sentiment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>The product quality is amazing and I'm very sa...</td>
+<td>Positive</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Customer service was slow and unhelpful.</td>
+<td>Negative</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Delivery was on time, nothing special.</td>
+<td>Neutral</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>The app keeps crashing and it's frustrating.</td>
+<td>Negative</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Great prices and very fast shipping.</td>
+<td>Positive</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
-<section id="step-5-visualize-sentiment-distribution" class="slide level2">
-<h2>Step 5 — Visualize Sentiment Distribution</h2>
-<p>Now we visualize the sentiment breakdown using a bar chart. ### Explanation of the code: 1. value_counts() counts how many comments fall into each sentiment category. 2. We create a bar chart with: * Green → Positive * Red → Negative * Gray → Neutral 3. Labels and titles are added to make the chart more readable.</p>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="step-5-visualize-sentiment-distribution" class="title-slide slide level1 center">
+<h1>Step 5 — Visualize Sentiment Distribution</h1>
+<p>We plot the distribution of sentiment categories.<br>
+This gives a quick overview of how customers feel about the service or product.</p>
+
+<img data-src="sentiment_analysis_files/figure-revealjs/cell-6-output-1.png" class="r-stretch"></section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="step-6-ai-summary-of-sentiment-results" class="title-slide slide level1 center">
+<h1>Step 6 — AI Summary of Sentiment Results</h1>
+<p>Finally, we ask <code>gpt-oss:20b</code> to summarize the sentiment results in natural language.</p>
+<div id="40eff67a" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-stdout">
+<pre><code>The customer feedback analysis yielded a total of ten comments. Positive sentiments dominated the responses, accounting for 50 % (5 comments), followed by neutral remarks at 20 % (2 comments) and negative feedback at 30 % (3 comments). Overall, the majority of customers expressed satisfaction, with a minority highlighting concerns that may warrant further investigation.</code></pre>
+</div>
+</div>
 </section>
-<section id="step-6-ai-summary-of-sentiment-results" class="slide level2">
-<h2>Step 6 — AI Summary of Sentiment Results</h2>
-<p>We ask the AI model to generate a <strong>short natural-language summary</strong> of the sentiment analysis results.</p>
-<p><strong>Explanation of the code:</strong> 1. We pass the sentiment counts as context to the model. 2. The model generates a summary describing the overall sentiment distribution 3. The result is printed for quick interpretation.</p>
-</section>
-<section id="conclusion" class="slide level2">
-<h2>Conclusion</h2>
+<section class="slide level2">
+
+</section></section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
 <p>This analysis demonstrates how <strong>AI + Python + Quarto</strong> can be combined to:</p>
 <ul>
-<li><p>Automate <strong>text classification</strong> (sentiment detection).</p></li>
-<li><p>Generate <strong>visual summaries</strong> using charts.</p></li>
-<li><p>Provide <strong>natural-language insights</strong> with AI.</p></li>
+<li>Automate text classification.<br>
+</li>
+<li>Generate visual summaries.<br>
+</li>
+<li>Provide natural-language insights.</li>
 </ul>
-<p>Such a workflow can be applied to any text-based dataset (e.g., surveys, feedback, reviews) to quickly extract <strong>actionable business intelligence</strong>.</p>
-<p>This workflow can be used to automate the production of reports periodically with a click.</p>
+<p>Such a workflow can be applied to any text-based dataset (e.g., surveys, feedback, reviews) to quickly extract <strong>actionable intelligence</strong>.</p>
 
 </section>
     </div>
@@ -355,7 +554,7 @@ The pipeline performs the following steps:</p>
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'fade',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

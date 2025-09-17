@@ -1,0 +1,6 @@
+.reveal pre {
+    white-space: pre-wrap !important;  /* wrap lines */
+    word-break: break-word;            /* break long words */
+    font-size: 0.85em;                 /* optional: smaller font to fit slide */
+  }
+  

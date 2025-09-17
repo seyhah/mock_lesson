@@ -11,3 +11,5 @@ presentpy sentiment_analysis.ipynb
 quarto render sentiment_analysis (1).qmd --to html
 
 quarto render sentiment_analysis (1).qmd --to html
+
+quarto render sentiment_analysis_slide_wtih_code.qmd --to revealjs

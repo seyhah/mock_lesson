@@ -23,6 +23,10 @@ The pipeline performs the following steps:
 3. Visualize the distribution of sentiments.
 4. Generate an AI-powered summary of the results.
 
+[Github repository](https://github.com/seyhah/mock_lesson/tree/master#)
+
+Source code: https://github.com/seyhah/mock_lesson.git
+
 ---
 
 ## Step 1 — Import Libraries

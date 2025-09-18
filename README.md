@@ -2,6 +2,7 @@
 ## author: "By: Ven Seyhah, PhD"
 date: "2025-09-19"
 
+
 ## Introduction
 
 This session present a hand-on workflow to analyze customer comments using an AI model (**gpt-oss:20b via Ollama**).  
@@ -12,6 +13,10 @@ The pipeline performs the following steps:
 2. Run sentiment classification (**Positive, Negative, Neutral**).
 3. Visualize the distribution of sentiments.
 4. Generate an AI-powered summary of the results.
+
+[Github repository](https://github.com/seyhah/mock_lesson/tree/master#)
+
+Source code: https://github.com/seyhah/mock_lesson.git
 
 ---
 

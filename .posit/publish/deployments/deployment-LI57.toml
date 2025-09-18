@@ -11,20 +11,24 @@ id = '01995b02-af30-811f-c10e-0e4d5456b73a'
 dashboard_url = 'https://connect.posit.cloud/seyhah/content/01995b02-af30-811f-c10e-0e4d5456b73a'
 direct_url = 'https://01995b02-af30-811f-c10e-0e4d5456b73a.share.connect.posit.cloud'
 logs_url = 'https://connect.posit.cloud/seyhah/content/01995b02-af30-811f-c10e-0e4d5456b73a/history'
-deployed_at = '2025-09-18T11:14:53+07:00'
-bundle_id = '01995b07-e77b-7af2-77ad-b7652c482d50'
+deployed_at = '2025-09-18T11:22:22+07:00'
+bundle_id = '01995b0e-c77e-1d2a-8fe9-6fb1ce5cd1d7'
 files = [
   '.posit/publish/Sentiment Analysis on Customer-MQM6.toml',
   '.posit/publish/deployments/deployment-LI57.toml',
+  'comments.csv',
   'requirements.txt',
-  'sentiment_analysis_slide_wtih_code.qmd'
+  'sentiment_analysis_slide_wtih_code.qmd',
+  'sentiment_results.csv',
+  'styles.css'
 ]
 requirements = [
   "pandas\r",
   "matplotlib\r",
   "ollama\r",
   "great-tables\r",
-  'jupyter'
+  "jupyter\r",
+  'quarto'
 ]
 
 [connect_cloud]
@@ -45,7 +49,10 @@ files = [
   '/sentiment_analysis_slide_wtih_code.qmd',
   '/requirements.txt',
   '/.posit/publish/Sentiment Analysis on Customer-MQM6.toml',
-  '/.posit/publish/deployments/deployment-LI57.toml'
+  '/.posit/publish/deployments/deployment-LI57.toml',
+  '/styles.css',
+  '/comments.csv',
+  '/sentiment_results.csv'
 ]
 title = "Sentiment Analysis on Customers' Comments (Using AI model)"
 

@@ -10,7 +10,10 @@ files = [
   '/sentiment_analysis_slide_wtih_code.qmd',
   '/requirements.txt',
   '/.posit/publish/Sentiment Analysis on Customer-MQM6.toml',
-  '/.posit/publish/deployments/deployment-LI57.toml'
+  '/.posit/publish/deployments/deployment-LI57.toml',
+  '/styles.css',
+  '/comments.csv',
+  '/sentiment_results.csv'
 ]
 title = "Sentiment Analysis on Customers' Comments (Using AI model)"
 

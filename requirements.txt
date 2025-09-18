@@ -3,3 +3,4 @@ matplotlib
 ollama
 great-tables
 jupyter
+quarto

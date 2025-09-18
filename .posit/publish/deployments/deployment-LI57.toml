@@ -11,8 +11,8 @@ id = '01995b02-af30-811f-c10e-0e4d5456b73a'
 dashboard_url = 'https://connect.posit.cloud/seyhah/content/01995b02-af30-811f-c10e-0e4d5456b73a'
 direct_url = 'https://01995b02-af30-811f-c10e-0e4d5456b73a.share.connect.posit.cloud'
 logs_url = 'https://connect.posit.cloud/seyhah/content/01995b02-af30-811f-c10e-0e4d5456b73a/history'
-deployed_at = '2025-09-18T11:08:56+07:00'
-bundle_id = '01995b02-af32-8851-b725-caf7a4cb30b1'
+deployed_at = '2025-09-18T11:14:53+07:00'
+bundle_id = '01995b07-e77b-7af2-77ad-b7652c482d50'
 files = [
   '.posit/publish/Sentiment Analysis on Customer-MQM6.toml',
   '.posit/publish/deployments/deployment-LI57.toml',
@@ -23,7 +23,8 @@ requirements = [
   "pandas\r",
   "matplotlib\r",
   "ollama\r",
-  'great-tables'
+  "great-tables\r",
+  'jupyter'
 ]
 
 [connect_cloud]
@@ -31,7 +32,7 @@ account_name = 'seyhah'
 
 [deployment_error]
 code = 'unknown'
-message = 'Dependency missing: Please add the following dependencies to your dependency file and republish: jupyter.'
+message = 'Unable to render: Unable to render your content. Please check the logs for more information.'
 operation = 'publish/deployContent'
 
 [configuration]

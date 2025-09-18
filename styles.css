@@ -1,6 +1,26 @@
-.reveal pre {
-    white-space: pre-wrap !important;  /* wrap lines */
-    word-break: break-word;            /* break long words */
-    font-size: 0.85em;                 /* optional: smaller font to fit slide */
-  }
-  
+/* Ensure all slides respect max height and scroll if content is too long */
+.reveal .slides section {
+  max-height: 200vh;          /* restrict slide content to 90% of viewport height */
+  overflow-y: auto;          /* vertical scroll if content exceeds height */
+  box-sizing: border-box;    /* include padding in height calculation */
+  padding: 20px;             /* optional: add some padding around content */
+}
+
+/* Optional: tables inside slides */
+.reveal .slides table {
+  table-layout: fixed;       /* fix column widths */
+  width: 100%;               /* table spans full slide width */
+}
+
+.reveal .slides td,
+.reveal .slides th {
+  word-wrap: break-word;     /* wrap long text in table cells */
+  white-space: normal;
+}
+
+/* Optional: make plots/images fit inside slides */
+.reveal .slides img, 
+.reveal .slides svg {
+  max-height: 80vh;
+  width: auto;
+}

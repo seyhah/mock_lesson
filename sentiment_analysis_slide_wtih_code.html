@@ -9,7 +9,7 @@
 <link href="sentiment_analysis_slide_wtih_code_files/libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.31">
 
-  <meta name="author" content="Ven Seyhah, PhD">
+  <meta name="author" content="By: Ven Seyhah, PhD">
   <meta name="dcterms.date" content="2025-09-19">
   <title>Cambodia University of Technology and Science (CamTech)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -199,12 +199,12 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Cambodia University of Technology and Science (CamTech)</h1>
-  <p class="subtitle">Customer Comments Sentiment Analysis</p>
+  <p class="subtitle">Sentiment Analysis on Customers’ Comments</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Ven Seyhah, PhD 
+By: Ven Seyhah, PhD 
 </div>
 </div>
 </div>
@@ -234,68 +234,107 @@ Ven Seyhah, PhD
 </li>
 <li><code>textwrap</code> to the summary of the results</li>
 <li><code>re</code> to clean text</li>
+<li><code>great_table</code> to present table in styled format</li>
+<li><code>Markdown, display</code> to allows rendering HTML/Markdown directly in a notebook cell</li>
 </ul>
-<div id="1621ed17" class="cell" data-execution_count="1">
+<div id="4e13252c" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ollama <span class="im">import</span> chat</span>
 <span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> textwrap</span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> great_tables <span class="im">as</span> gt</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Markdown, display</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-2-load-data" class="slide level2">
 <h2>Step 2 — Load Data</h2>
 <p>We load customer comments stored in <strong>comments.csv</strong>.<br>
 Each row contains one comment.</p>
-<div id="f3b250e3" class="cell" data-execution_count="2">
+<div id="ccf02e3e" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"comments.csv"</span>)</span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> [col.capitalize() <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first 5 rows as a styled table</span></span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>gt.GT(df.head()).tab_options(</span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>    table_font_size<span class="op">=</span><span class="st">"30px"</span>,      <span class="co"># increase font size</span></span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>    data_row_padding<span class="op">=</span><span class="st">"15px"</span>,      <span class="co"># add more space between rows</span></span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>    column_labels_padding<span class="op">=</span><span class="st">"10px"</span> <span class="co"># bigger headers</span></span>
+<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="153">
+<div id="wabpgrcyjm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#wabpgrcyjm table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
+#wabpgrcyjm thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#wabpgrcyjm p { margin: 0; padding: 0; }
+ #wabpgrcyjm .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #wabpgrcyjm .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #wabpgrcyjm .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #wabpgrcyjm .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #wabpgrcyjm .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #wabpgrcyjm .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #wabpgrcyjm .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #wabpgrcyjm .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #wabpgrcyjm .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #wabpgrcyjm .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #wabpgrcyjm .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #wabpgrcyjm .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #wabpgrcyjm .gt_spanner_row { border-bottom-style: hidden; }
+ #wabpgrcyjm .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #wabpgrcyjm .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #wabpgrcyjm .gt_from_md> :first-child { margin-top: 0; }
+ #wabpgrcyjm .gt_from_md> :last-child { margin-bottom: 0; }
+ #wabpgrcyjm .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #wabpgrcyjm .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #wabpgrcyjm .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #wabpgrcyjm .gt_row_group_first td { border-top-width: 2px; }
+ #wabpgrcyjm .gt_row_group_first th { border-top-width: 2px; }
+ #wabpgrcyjm .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #wabpgrcyjm .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #wabpgrcyjm .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #wabpgrcyjm .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #wabpgrcyjm .gt_left { text-align: left; }
+ #wabpgrcyjm .gt_center { text-align: center; }
+ #wabpgrcyjm .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #wabpgrcyjm .gt_font_normal { font-weight: normal; }
+ #wabpgrcyjm .gt_font_bold { font-weight: bold; }
+ #wabpgrcyjm .gt_font_italic { font-style: italic; }
+ #wabpgrcyjm .gt_super { font-size: 65%; }
+ #wabpgrcyjm .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #wabpgrcyjm .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header" style="text-align: right;">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">comment</th>
+<tr class="gt_col_headings header">
+<th id="Comment" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Comment</th>
 </tr>
 </thead>
-<tbody>
+<tbody class="gt_table_body">
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>The product quality is amazing and I'm very sa...</td>
+<td class="gt_row gt_left">The product quality is amazing and I'm very satisfied!</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>Customer service was slow and unhelpful.</td>
+<td class="gt_row gt_left">Customer service was slow and unhelpful.</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>Delivery was on time, nothing special.</td>
+<td class="gt_row gt_left">Delivery was on time, nothing special.</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>The app keeps crashing and it's frustrating.</td>
+<td class="gt_row gt_left">The app keeps crashing and it's frustrating.</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>Great prices and very fast shipping.</td>
+<td class="gt_row gt_left">Great prices and very fast shipping.</td>
 </tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -317,75 +356,125 @@ Each row contains one comment.</p>
 <li>We convert the results list into a DataFrame and save it to <code>sentiment_results.csv</code>.</li>
 </ol>
 </section>
-<section class="slide level2">
-
-<div id="98759525" class="cell" data-execution_count="3">
+<section id="step-3-code" class="slide level2">
+<h2>Step 3: Code</h2>
+<div id="0889e971" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> comment <span class="kw">in</span> df[<span class="st">'comment'</span>]:</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> comment <span class="kw">in</span> df[<span class="st">'Comment'</span>]:</span>
 <span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"Classify this customer comment as Positive, Negative, or Neutral:</span><span class="ch">\n\n</span><span class="sc">{</span>comment<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> chat(model<span class="op">=</span><span class="st">"gpt-oss:20b"</span>, messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
 <span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    sentiment <span class="op">=</span> resp[<span class="st">'message'</span>][<span class="st">'content'</span>].strip()</span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>    results.append({<span class="st">"comment"</span>: comment, <span class="st">"sentiment"</span>: sentiment})</span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_df <span class="op">=</span> pd.DataFrame(results)</span>
-<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_df.to_csv(<span class="st">"sentiment_results.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Saved sentiment_results.csv"</span>)</span>
-<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Saved sentiment_results.csv</code></pre>
+<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Cleaning step ---</span></span>
+<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove formatting like **text**, extra spaces, lowercase everything</span></span>
+<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>    sentiment <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="pp">[^a-zA-Z]</span><span class="vs">"</span>, <span class="st">""</span>, sentiment).lower()</span>
+<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize variations</span></span>
+<span id="cb3-12"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"pos"</span> <span class="kw">in</span> sentiment:</span>
+<span id="cb3-13"><a href="" aria-hidden="true" tabindex="-1"></a>        sentiment <span class="op">=</span> <span class="st">"Positive"</span></span>
+<span id="cb3-14"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="st">"neg"</span> <span class="kw">in</span> sentiment:</span>
+<span id="cb3-15"><a href="" aria-hidden="true" tabindex="-1"></a>        sentiment <span class="op">=</span> <span class="st">"Negative"</span></span>
+<span id="cb3-16"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="st">"neu"</span> <span class="kw">in</span> sentiment:</span>
+<span id="cb3-17"><a href="" aria-hidden="true" tabindex="-1"></a>        sentiment <span class="op">=</span> <span class="st">"Neutral"</span></span>
+<span id="cb3-18"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb3-19"><a href="" aria-hidden="true" tabindex="-1"></a>        sentiment <span class="op">=</span> <span class="st">"Unknown"</span></span>
+<span id="cb3-20"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="" aria-hidden="true" tabindex="-1"></a>    results.append({<span class="st">"comment"</span>: comment, <span class="st">"sentiment"</span>: sentiment})</span>
+<span id="cb3-22"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_df <span class="op">=</span> pd.DataFrame(results)</span>
+<span id="cb3-24"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_df.to_csv(<span class="st">"sentiment_results.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="3">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+</section>
+<section id="step-3-results" class="slide level2">
+<h2>Step 3: Results</h2>
+<div id="3a48a6e6" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_df.columns <span class="op">=</span> [col.capitalize() <span class="cf">for</span> col <span class="kw">in</span> sentiment_df.columns]</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>gt.GT(sentiment_df.head()).tab_options(</span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>    table_font_size<span class="op">=</span><span class="st">"30px"</span>,      <span class="co"># increase font size</span></span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a>    data_row_padding<span class="op">=</span><span class="st">"15px"</span>,      <span class="co"># add more space between rows</span></span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>    column_labels_padding<span class="op">=</span><span class="st">"10px"</span> <span class="co"># bigger headers</span></span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="155">
+<div id="tmvuyeibti" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#tmvuyeibti table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
+#tmvuyeibti thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#tmvuyeibti p { margin: 0; padding: 0; }
+ #tmvuyeibti .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #tmvuyeibti .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #tmvuyeibti .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #tmvuyeibti .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #tmvuyeibti .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #tmvuyeibti .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #tmvuyeibti .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #tmvuyeibti .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #tmvuyeibti .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #tmvuyeibti .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #tmvuyeibti .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #tmvuyeibti .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #tmvuyeibti .gt_spanner_row { border-bottom-style: hidden; }
+ #tmvuyeibti .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #tmvuyeibti .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #tmvuyeibti .gt_from_md> :first-child { margin-top: 0; }
+ #tmvuyeibti .gt_from_md> :last-child { margin-bottom: 0; }
+ #tmvuyeibti .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #tmvuyeibti .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #tmvuyeibti .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #tmvuyeibti .gt_row_group_first td { border-top-width: 2px; }
+ #tmvuyeibti .gt_row_group_first th { border-top-width: 2px; }
+ #tmvuyeibti .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #tmvuyeibti .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #tmvuyeibti .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #tmvuyeibti .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #tmvuyeibti .gt_left { text-align: left; }
+ #tmvuyeibti .gt_center { text-align: center; }
+ #tmvuyeibti .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #tmvuyeibti .gt_font_normal { font-weight: normal; }
+ #tmvuyeibti .gt_font_bold { font-weight: bold; }
+ #tmvuyeibti .gt_font_italic { font-style: italic; }
+ #tmvuyeibti .gt_super { font-size: 65%; }
+ #tmvuyeibti .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #tmvuyeibti .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header" style="text-align: right;">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">comment</th>
-<th data-quarto-table-cell-role="th">sentiment</th>
+<tr class="gt_col_headings header">
+<th id="Comment" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Comment</th>
+<th id="Sentiment" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Sentiment</th>
 </tr>
 </thead>
-<tbody>
+<tbody class="gt_table_body">
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>The product quality is amazing and I'm very sa...</td>
-<td>Positive</td>
+<td class="gt_row gt_left">The product quality is amazing and I'm very satisfied!</td>
+<td class="gt_row gt_left">Positive</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>Customer service was slow and unhelpful.</td>
-<td>Negative</td>
+<td class="gt_row gt_left">Customer service was slow and unhelpful.</td>
+<td class="gt_row gt_left">Negative</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>Delivery was on time, nothing special.</td>
-<td>Neutral</td>
+<td class="gt_row gt_left">Delivery was on time, nothing special.</td>
+<td class="gt_row gt_left">Neutral</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>The app keeps crashing and it's frustrating.</td>
-<td>Negative</td>
+<td class="gt_row gt_left">The app keeps crashing and it's frustrating.</td>
+<td class="gt_row gt_left">Negative</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>Great prices and very fast shipping.</td>
-<td>Positive</td>
+<td class="gt_row gt_left">Great prices and very fast shipping.</td>
+<td class="gt_row gt_left">Positive</td>
 </tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -395,61 +484,95 @@ Each row contains one comment.</p>
 <h2>Step 4 — Reload Processed Sentiment Data</h2>
 <p>We reload the processed results from <code>sentiment_results.csv</code>.<br>
 This ensures we always work with the cleaned dataset (<em>comment + sentiment</em>).</p>
-<div id="f86e12b3" class="cell" data-execution_count="4">
+<div id="c8f25817" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sentiment_results.csv"</span>)</span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> [col.capitalize() <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>gt.GT(df.head()).tab_options(</span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>    table_font_size<span class="op">=</span><span class="st">"30px"</span>,      <span class="co"># increase font size</span></span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>    data_row_padding<span class="op">=</span><span class="st">"15px"</span>,      <span class="co"># add more space between rows</span></span>
+<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>    column_labels_padding<span class="op">=</span><span class="st">"10px"</span> <span class="co"># bigger headers</span></span>
+<span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="156">
+<div id="intdrgejke" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#intdrgejke table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
+#intdrgejke thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#intdrgejke p { margin: 0; padding: 0; }
+ #intdrgejke .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #intdrgejke .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #intdrgejke .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #intdrgejke .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #intdrgejke .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #intdrgejke .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #intdrgejke .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #intdrgejke .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #intdrgejke .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #intdrgejke .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #intdrgejke .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #intdrgejke .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #intdrgejke .gt_spanner_row { border-bottom-style: hidden; }
+ #intdrgejke .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #intdrgejke .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #intdrgejke .gt_from_md> :first-child { margin-top: 0; }
+ #intdrgejke .gt_from_md> :last-child { margin-bottom: 0; }
+ #intdrgejke .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #intdrgejke .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #intdrgejke .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #intdrgejke .gt_row_group_first td { border-top-width: 2px; }
+ #intdrgejke .gt_row_group_first th { border-top-width: 2px; }
+ #intdrgejke .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #intdrgejke .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #intdrgejke .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #intdrgejke .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #intdrgejke .gt_left { text-align: left; }
+ #intdrgejke .gt_center { text-align: center; }
+ #intdrgejke .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #intdrgejke .gt_font_normal { font-weight: normal; }
+ #intdrgejke .gt_font_bold { font-weight: bold; }
+ #intdrgejke .gt_font_italic { font-style: italic; }
+ #intdrgejke .gt_super { font-size: 65%; }
+ #intdrgejke .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #intdrgejke .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<table class="dataframe caption-top" data-quarto-postprocess="true" data-border="1">
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header" style="text-align: right;">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">comment</th>
-<th data-quarto-table-cell-role="th">sentiment</th>
+<tr class="gt_col_headings header">
+<th id="Comment" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Comment</th>
+<th id="Sentiment" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Sentiment</th>
 </tr>
 </thead>
-<tbody>
+<tbody class="gt_table_body">
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>The product quality is amazing and I'm very sa...</td>
-<td>Positive</td>
+<td class="gt_row gt_left">The product quality is amazing and I'm very satisfied!</td>
+<td class="gt_row gt_left">Positive</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>Customer service was slow and unhelpful.</td>
-<td>Negative</td>
+<td class="gt_row gt_left">Customer service was slow and unhelpful.</td>
+<td class="gt_row gt_left">Negative</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>Delivery was on time, nothing special.</td>
-<td>Neutral</td>
+<td class="gt_row gt_left">Delivery was on time, nothing special.</td>
+<td class="gt_row gt_left">Neutral</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>The app keeps crashing and it's frustrating.</td>
-<td>Negative</td>
+<td class="gt_row gt_left">The app keeps crashing and it's frustrating.</td>
+<td class="gt_row gt_left">Negative</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>Great prices and very fast shipping.</td>
-<td>Positive</td>
+<td class="gt_row gt_left">Great prices and very fast shipping.</td>
+<td class="gt_row gt_left">Positive</td>
 </tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -474,22 +597,42 @@ This ensures we always work with the cleaned dataset (<em>comment + sentiment</e
 <li>Labels and titles are added to make the chart more readable.</li>
 </ol>
 </section>
-<section class="slide level2">
-
-<div id="9b953258" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="op">=</span> df[<span class="st">'sentiment'</span>].value_counts()</span>
+<section id="step-5-code-function-for-plotting" class="slide level2">
+<h2>Step 5: Code, Function for plotting</h2>
+<div id="d3e8237b" class="cell" data-fig-height="20" data-fig-width="30" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
-<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_counts.plot(kind<span class="op">=</span><span class="st">'bar'</span>, color<span class="op">=</span>[<span class="st">'green'</span>,<span class="st">'red'</span>,<span class="st">'gray'</span>])</span>
-<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Sentiment Distribution"</span>)</span>
-<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Sentiment"</span>)</span>
-<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of Comments"</span>)</span>
-<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_sentiment_distribution(df, column<span class="op">=</span><span class="st">'Sentiment'</span>):</span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    Plot the sentiment distribution from a dataframe column.</span></span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">        df (pd.DataFrame): Input dataframe containing sentiment column.</span></span>
+<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">        column (str): Name of the column with sentiment labels.</span></span>
+<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-11"><a href="" aria-hidden="true" tabindex="-1"></a>    sentiment_counts <span class="op">=</span> df[column].value_counts()</span>
+<span id="cb6-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">30</span>, <span class="dv">20</span>))</span>
+<span id="cb6-14"><a href="" aria-hidden="true" tabindex="-1"></a>    sentiment_counts.plot(</span>
+<span id="cb6-15"><a href="" aria-hidden="true" tabindex="-1"></a>        kind<span class="op">=</span><span class="st">'bar'</span>,</span>
+<span id="cb6-16"><a href="" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>[<span class="st">'green'</span>, <span class="st">'red'</span>, <span class="st">'gray'</span>][:<span class="bu">len</span>(sentiment_counts)]</span>
+<span id="cb6-17"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-18"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Sentiment Distribution"</span>, fontsize<span class="op">=</span><span class="dv">50</span>, weight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-19"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Sentiment"</span>, fontsize<span class="op">=</span><span class="dv">44</span>, weight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-20"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Number of Comments"</span>, fontsize<span class="op">=</span><span class="dv">45</span>, weight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-21"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">0</span>, fontsize<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb6-22"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.yticks(fontsize<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb6-23"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb6-24"><a href="" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-5-bar-chart" class="slide level2">
+<h2>Step 5: Bar Chart</h2>
+<div id="b5de112a" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>plot_sentiment_distribution(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="sentiment_analysis_slide_wtih_code_files/figure-revealjs/cell-6-output-1.png" class="r-stretch"></section>
+<img data-src="sentiment_analysis_slide_wtih_code_files/figure-revealjs/cell-8-output-1.png" class="r-stretch"></section>
 <section id="step-6-ai-summary-of-sentiment-results" class="slide level2">
 <h2>Step 6 — AI Summary of Sentiment Results</h2>
 <p>We ask the AI model to generate a short natural-language summary of the sentiment analysis results.</p>
@@ -502,51 +645,47 @@ This ensures we always work with the cleaned dataset (<em>comment + sentiment</e
 <li>The result is printed for quick interpretation.</li>
 </ol>
 </section>
-<section class="slide level2">
-
-<div id="a72f0496" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"""</span></span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Here are the sentiment counts from customer comments:</span></span>
-<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>sentiment_counts<span class="sc">.</span>to_dict()<span class="sc">}</span></span>
-<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Write a short summary of these results.</span></span>
-<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Use the exact numbers given (do not approximate).</span></span>
-<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Mention Positive, Negative, and Neutral counts explicitly.</span></span>
-<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Keep the explanation concise.</span></span>
-<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add an interpretation of each number</span></span>
-<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add a conclosion sentence at the end.</span></span>
-<span id="cb7-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
-<span id="cb7-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> chat(model<span class="op">=</span><span class="st">"gpt-oss:20b"</span>, messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
-<span id="cb7-14"><a href="" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> response[<span class="st">'message'</span>][<span class="st">'content'</span>]</span>
-<span id="cb7-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Clean the summary text ---</span></span>
-<span id="cb7-17"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> summary</span>
-<span id="cb7-18"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="ch">\*\*</span><span class="kw">(</span><span class="dv">.</span><span class="op">*?</span><span class="kw">)</span><span class="ch">\*\*</span><span class="vs">"</span>, <span class="vs">r"</span><span class="ch">\1</span><span class="vs">"</span>, clean_summary)  <span class="co"># remove bold markdown</span></span>
-<span id="cb7-19"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="pp">[≈~]</span><span class="vs">"</span>, <span class="st">""</span>, clean_summary)              <span class="co"># remove symbols</span></span>
-<span id="cb7-20"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">""</span>, clean_summary).strip()      <span class="co"># normalize spaces</span></span>
-<span id="cb7-21"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"-"</span>, <span class="st">""</span>, clean_summary).strip()      <span class="co"># normalize spaces</span></span>
-<span id="cb7-22"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap for display</span></span>
-<span id="cb7-24"><a href="" aria-hidden="true" tabindex="-1"></a>wrapped_summary <span class="op">=</span> textwrap.fill(clean_summary, width<span class="op">=</span><span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="step-6-code" class="slide level2">
+<h2>Step 6: Code</h2>
+<div id="53fc46d8" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="op">=</span> df[<span class="st">'Sentiment'</span>].value_counts()</span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Here are the sentiment counts from customer comments:</span></span>
+<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>sentiment_counts<span class="sc">.</span>to_dict()<span class="sc">}</span></span>
+<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Write a short summary of these results.</span></span>
+<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Use the exact numbers given (do not approximate).</span></span>
+<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Mention Positive, Negative, and Neutral counts explicitly.</span></span>
+<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Keep the explanation concise.</span></span>
+<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add an interpretation of each number</span></span>
+<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add a conclosion sentence at the end.</span></span>
+<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
+<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> chat(model<span class="op">=</span><span class="st">"gpt-oss:20b"</span>, messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
+<span id="cb8-16"><a href="" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> response[<span class="st">'message'</span>][<span class="st">'content'</span>]</span>
+<span id="cb8-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">''' </span></span>
+<span id="cb8-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Clean the summary text ---</span></span>
+<span id="cb8-20"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = summary</span></span>
+<span id="cb8-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"</span><span class="er">\</span><span class="co">*</span><span class="er">\</span><span class="co">*(.*?)</span><span class="er">\</span><span class="co">*</span><span class="er">\</span><span class="co">*", r"</span><span class="ch">\1</span><span class="co">", clean_summary)  # remove bold markdown</span></span>
+<span id="cb8-22"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"[≈~]", "", clean_summary)              # remove symbols</span></span>
+<span id="cb8-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"</span><span class="er">\</span><span class="co">s+", " ", clean_summary).strip()      # normalize spaces</span></span>
+<span id="cb8-24"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span> </span>
+<span id="cb8-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove common dash variations and extra spaces</span></span>
+<span id="cb8-26"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="pp">[–—-]</span><span class="vs">"</span>, <span class="st">" "</span>, summary)   <span class="co"># replace -, –, — with space</span></span>
+<span id="cb8-27"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, clean_summary).strip()  <span class="co"># normalize spaces</span></span>
+<span id="cb8-28"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap for display</span></span>
+<span id="cb8-30"><a href="" aria-hidden="true" tabindex="-1"></a>wrapped_summary <span class="op">=</span> textwrap.fill(clean_summary, width<span class="op">=</span><span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section class="slide level2">
-
-<div id="fb2fcb6b" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Summary of Results"</span>)</span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(wrapped_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Summary of Results
-Theanalysisofcustomercommentsproducedthefollowingsentimentcounts:Positive=5,Nega
-tive=3,Neutral=1,and“Neutral”=1.Positive(5):Fivecustomersexpressedfavorableopini
-ons,showingthatthemajorityfeelgoodabouttheproductorservice.Negative(3):Threecust
-omersvoiceddissatisfaction,signallingareasthatmayneedimprovement.Neutral(1):Onec
-ommentwasneitherpositivenornegative,reflectinganeutralstanceorambivalence.“Neutr
-al”(1):AnothersinglecommentwaslabeledNeutral(withboldmarkup),indicatingasimilarn
-eutralsentimentbutpossiblyhighlightingaformattinginconsistency.Overall,thesentim
-entdistributionindicatesagenerallyfavorableperception,withaminorityofconcernstha
-tshouldbeaddressedtofurtherenhancecustomersatisfaction.</code></pre>
+<section id="step-6-summary-of-results" class="slide level2">
+<h2>Step 6: Summary of Results</h2>
+<div id="8f37fda2" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>display(Markdown(wrapped_summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>The customer comments contain <strong>5 Positive</strong>, <strong>3 Negative</strong>, and <strong>2 Neutral</strong> remarks. <strong>5 Positive</strong> indicates that the majority of respondents are satisfied and highlight favorable aspects. <strong>3 Negative</strong> reveals a notable but minority group that experienced issues or dissatisfaction. <strong>2 Neutral</strong> reflects comments that are neither strongly positive nor negative, suggesting indifference or ambivalence. Overall, the sentiment distribution shows a moderately favorable view of the product/service, with room to address the concerns raised by the negative feedback.</p>
 </div>
 </div>
 </section>

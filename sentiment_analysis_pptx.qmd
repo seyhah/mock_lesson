@@ -1,22 +1,12 @@
 ---
 title: "Cambodia University of Technology and Science (CamTech)"
 subtitle: "Sentiment Analysis on Customers' Comments"
-author: "By Ven Seyhah, PhD"
+author: "By: Ven Seyhah, PhD"
 date: "2025-09-19"
-format: 
-  revealjs:
-    code-line-numbers: false
-    css: styles.css
+format: pptx 
 jupyter: python3
 execute:
   echo: true           # <-- makes all code chunks show by default
----
-
-How can AI be integrated in the research, data analysis, data science, and reporting?
-
-Just ask AI to write the whole report for us?  
--> Hallucination
-
 ---
 
 ## Introduction
@@ -30,7 +20,7 @@ The pipeline performs the following steps:
 3. Visualize the distribution of sentiments.
 4. Generate an AI-powered summary of the results.
 
-[Github repository](https://github.com/seyhah/mock_lesson/tree/master#):https://github.com/seyhah/mock_lesson/tree/master#
+[Github repository](https://github.com/seyhah/mock_lesson/tree/master#)
 
 Source code: https://github.com/seyhah/mock_lesson.git
 
@@ -43,10 +33,10 @@ We begin by importing the required Python libraries:
 - `pandas` for handling and manipulating structured data (tables).  
 - `matplotlib` for plotting and visualizing the results.  
 - `ollama` to connect and interact with the local AI model(`gpt-oss:20b`).  
-- `great_table` to present table in styled format.
-- `textwrap` to the summary of the results.
-- `re` to clean text.
-- `Markdown, display` to allows rendering HTML/Markdown directly in a notebook cell.
+- `textwrap` to the summary of the results
+- `re` to clean text
+- `great_table` to present table in styled format
+- `Markdown, display` to allows rendering HTML/Markdown directly in a notebook cell
 
 
 ```{python}
@@ -98,7 +88,7 @@ Here we run AI-powered sentiment analysis on each comment.
 
 results = []
 for comment in df['Comment']:
-    prompt = f"You are an expert in Sentiment Analysis on customer’s comments and feedback. Classify this customer comment as Positive, Negative, or Neutral:\n\n{comment}"
+    prompt = f"Classify this customer comment as Positive, Negative, or Neutral:\n\n{comment}"
     resp = chat(model="gpt-oss:20b", messages=[{"role": "user", "content": prompt}])
     sentiment = resp['message']['content'].strip()
 
@@ -231,7 +221,6 @@ We ask the AI model to generate a short natural-language summary of the sentimen
 sentiment_counts = df['Sentiment'].value_counts()
 
 prompt = f"""
-You are a research assistant in summarizing the results of a sentiment analysis task. 
 Here are the sentiment counts from customer comments:
 {sentiment_counts.to_dict()}
 

@@ -10,5 +10,5 @@ dependencies = [
     "ollama",
     "quarto",
     "great-tables",
-    "jupyter"
+    "jupyter",
 ]

@@ -211,6 +211,12 @@ By: Ven Seyhah, PhD
 
   <p class="date">2025-09-19</p>
 </section>
+<section class="slide level2">
+
+<p>How can AI be integrated in the research, data analysis, data science, and reporting?</p>
+<p>Just ask AI to write the whole report for us?<br>
+-&gt; Hallucination</p>
+</section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
 <p>This session present a hand-on workflow to analyze customer comments using an AI model (<strong>gpt-oss:20b via Ollama</strong>).</p>
@@ -221,7 +227,7 @@ By: Ven Seyhah, PhD
 <li>Visualize the distribution of sentiments.</li>
 <li>Generate an AI-powered summary of the results.</li>
 </ol>
-<p><a href="https://github.com/seyhah/mock_lesson/tree/master#">Github repository</a></p>
+<p><a href="https://github.com/seyhah/mock_lesson/tree/master#">Github repository</a>:https://github.com/seyhah/mock_lesson/tree/master#</p>
 <p>Source code: https://github.com/seyhah/mock_lesson.git</p>
 </section>
 <section id="step-1-import-libraries" class="slide level2">
@@ -234,12 +240,12 @@ By: Ven Seyhah, PhD
 </li>
 <li><code>ollama</code> to connect and interact with the local AI model(<code>gpt-oss:20b</code>).<br>
 </li>
-<li><code>textwrap</code> to the summary of the results</li>
-<li><code>re</code> to clean text</li>
-<li><code>great_table</code> to present table in styled format</li>
-<li><code>Markdown, display</code> to allows rendering HTML/Markdown directly in a notebook cell</li>
+<li><code>great_table</code> to present table in styled format.</li>
+<li><code>textwrap</code> to the summary of the results.</li>
+<li><code>re</code> to clean text.</li>
+<li><code>Markdown, display</code> to allows rendering HTML/Markdown directly in a notebook cell.</li>
 </ul>
-<div id="874aae8b" class="cell" data-execution_count="1">
+<div id="db5b74e7" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ollama <span class="im">import</span> chat</span>
@@ -253,7 +259,7 @@ By: Ven Seyhah, PhD
 <h2>Step 2 — Load Data</h2>
 <p>We load customer comments stored in <strong>comments.csv</strong>.<br>
 Each row contains one comment.</p>
-<div id="dc8b5ca7" class="cell" data-execution_count="2">
+<div id="ac4ab681" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"comments.csv"</span>)</span>
 <span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> [col.capitalize() <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
 <span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first 5 rows as a styled table</span></span>
@@ -262,53 +268,53 @@ Each row contains one comment.</p>
 <span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>    data_row_padding<span class="op">=</span><span class="st">"15px"</span>,      <span class="co"># add more space between rows</span></span>
 <span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>    column_labels_padding<span class="op">=</span><span class="st">"10px"</span> <span class="co"># bigger headers</span></span>
 <span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<div id="ssdugkditb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div id="esrapzbquf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#ssdugkditb table {
+#esrapzbquf table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#ssdugkditb thead, tbody, tfoot, tr, td, th { border-style: none; }
+#esrapzbquf thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#ssdugkditb p { margin: 0; padding: 0; }
- #ssdugkditb .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #ssdugkditb .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #ssdugkditb .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #ssdugkditb .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #ssdugkditb .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #ssdugkditb .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #ssdugkditb .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #ssdugkditb .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #ssdugkditb .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #ssdugkditb .gt_column_spanner_outer:first-child { padding-left: 0; }
- #ssdugkditb .gt_column_spanner_outer:last-child { padding-right: 0; }
- #ssdugkditb .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
- #ssdugkditb .gt_spanner_row { border-bottom-style: hidden; }
- #ssdugkditb .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #ssdugkditb .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #ssdugkditb .gt_from_md> :first-child { margin-top: 0; }
- #ssdugkditb .gt_from_md> :last-child { margin-bottom: 0; }
- #ssdugkditb .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #ssdugkditb .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #ssdugkditb .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #ssdugkditb .gt_row_group_first td { border-top-width: 2px; }
- #ssdugkditb .gt_row_group_first th { border-top-width: 2px; }
- #ssdugkditb .gt_striped { background-color: rgba(128,128,128,0.05); }
- #ssdugkditb .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #ssdugkditb .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #ssdugkditb .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #ssdugkditb .gt_left { text-align: left; }
- #ssdugkditb .gt_center { text-align: center; }
- #ssdugkditb .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #ssdugkditb .gt_font_normal { font-weight: normal; }
- #ssdugkditb .gt_font_bold { font-weight: bold; }
- #ssdugkditb .gt_font_italic { font-style: italic; }
- #ssdugkditb .gt_super { font-size: 65%; }
- #ssdugkditb .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #ssdugkditb .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#esrapzbquf p { margin: 0; padding: 0; }
+ #esrapzbquf .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #esrapzbquf .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #esrapzbquf .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #esrapzbquf .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #esrapzbquf .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #esrapzbquf .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #esrapzbquf .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #esrapzbquf .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #esrapzbquf .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #esrapzbquf .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #esrapzbquf .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #esrapzbquf .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #esrapzbquf .gt_spanner_row { border-bottom-style: hidden; }
+ #esrapzbquf .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #esrapzbquf .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #esrapzbquf .gt_from_md> :first-child { margin-top: 0; }
+ #esrapzbquf .gt_from_md> :last-child { margin-bottom: 0; }
+ #esrapzbquf .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #esrapzbquf .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #esrapzbquf .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #esrapzbquf .gt_row_group_first td { border-top-width: 2px; }
+ #esrapzbquf .gt_row_group_first th { border-top-width: 2px; }
+ #esrapzbquf .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #esrapzbquf .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #esrapzbquf .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #esrapzbquf .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #esrapzbquf .gt_left { text-align: left; }
+ #esrapzbquf .gt_center { text-align: center; }
+ #esrapzbquf .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #esrapzbquf .gt_font_normal { font-weight: normal; }
+ #esrapzbquf .gt_font_bold { font-weight: bold; }
+ #esrapzbquf .gt_font_italic { font-style: italic; }
+ #esrapzbquf .gt_super { font-size: 65%; }
+ #esrapzbquf .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #esrapzbquf .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -360,10 +366,10 @@ Each row contains one comment.</p>
 </section>
 <section id="step-3-code" class="slide level2">
 <h2>Step 3: Code</h2>
-<div id="72880b27" class="cell" data-execution_count="3">
+<div id="23daafe2" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> comment <span class="kw">in</span> df[<span class="st">'Comment'</span>]:</span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"Classify this customer comment as Positive, Negative, or Neutral:</span><span class="ch">\n\n</span><span class="sc">{</span>comment<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"You are an expert in Sentiment Analysis on customer’s comments and feedback. Classify this customer comment as Positive, Negative, or Neutral:</span><span class="ch">\n\n</span><span class="sc">{</span>comment<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> chat(model<span class="op">=</span><span class="st">"gpt-oss:20b"</span>, messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
 <span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    sentiment <span class="op">=</span> resp[<span class="st">'message'</span>][<span class="st">'content'</span>].strip()</span>
 <span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -389,60 +395,60 @@ Each row contains one comment.</p>
 </section>
 <section id="step-3-results" class="slide level2">
 <h2>Step 3: Results</h2>
-<div id="2374839b" class="cell" data-execution_count="4">
+<div id="d08bd8aa" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_df.columns <span class="op">=</span> [col.capitalize() <span class="cf">for</span> col <span class="kw">in</span> sentiment_df.columns]</span>
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>gt.GT(sentiment_df.head()).tab_options(</span>
 <span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>    table_font_size<span class="op">=</span><span class="st">"30px"</span>,      <span class="co"># increase font size</span></span>
 <span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a>    data_row_padding<span class="op">=</span><span class="st">"15px"</span>,      <span class="co"># add more space between rows</span></span>
 <span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>    column_labels_padding<span class="op">=</span><span class="st">"10px"</span> <span class="co"># bigger headers</span></span>
 <span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<div id="iyjsszovbg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div id="eavrusdqgp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#iyjsszovbg table {
+#eavrusdqgp table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#iyjsszovbg thead, tbody, tfoot, tr, td, th { border-style: none; }
+#eavrusdqgp thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#iyjsszovbg p { margin: 0; padding: 0; }
- #iyjsszovbg .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #iyjsszovbg .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #iyjsszovbg .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #iyjsszovbg .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #iyjsszovbg .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #iyjsszovbg .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #iyjsszovbg .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #iyjsszovbg .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #iyjsszovbg .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #iyjsszovbg .gt_column_spanner_outer:first-child { padding-left: 0; }
- #iyjsszovbg .gt_column_spanner_outer:last-child { padding-right: 0; }
- #iyjsszovbg .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
- #iyjsszovbg .gt_spanner_row { border-bottom-style: hidden; }
- #iyjsszovbg .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #iyjsszovbg .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #iyjsszovbg .gt_from_md> :first-child { margin-top: 0; }
- #iyjsszovbg .gt_from_md> :last-child { margin-bottom: 0; }
- #iyjsszovbg .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #iyjsszovbg .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #iyjsszovbg .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #iyjsszovbg .gt_row_group_first td { border-top-width: 2px; }
- #iyjsszovbg .gt_row_group_first th { border-top-width: 2px; }
- #iyjsszovbg .gt_striped { background-color: rgba(128,128,128,0.05); }
- #iyjsszovbg .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #iyjsszovbg .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #iyjsszovbg .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #iyjsszovbg .gt_left { text-align: left; }
- #iyjsszovbg .gt_center { text-align: center; }
- #iyjsszovbg .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #iyjsszovbg .gt_font_normal { font-weight: normal; }
- #iyjsszovbg .gt_font_bold { font-weight: bold; }
- #iyjsszovbg .gt_font_italic { font-style: italic; }
- #iyjsszovbg .gt_super { font-size: 65%; }
- #iyjsszovbg .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #iyjsszovbg .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#eavrusdqgp p { margin: 0; padding: 0; }
+ #eavrusdqgp .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #eavrusdqgp .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #eavrusdqgp .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #eavrusdqgp .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #eavrusdqgp .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #eavrusdqgp .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #eavrusdqgp .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #eavrusdqgp .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #eavrusdqgp .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #eavrusdqgp .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #eavrusdqgp .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #eavrusdqgp .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #eavrusdqgp .gt_spanner_row { border-bottom-style: hidden; }
+ #eavrusdqgp .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #eavrusdqgp .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #eavrusdqgp .gt_from_md> :first-child { margin-top: 0; }
+ #eavrusdqgp .gt_from_md> :last-child { margin-bottom: 0; }
+ #eavrusdqgp .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #eavrusdqgp .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #eavrusdqgp .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #eavrusdqgp .gt_row_group_first td { border-top-width: 2px; }
+ #eavrusdqgp .gt_row_group_first th { border-top-width: 2px; }
+ #eavrusdqgp .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #eavrusdqgp .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #eavrusdqgp .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #eavrusdqgp .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #eavrusdqgp .gt_left { text-align: left; }
+ #eavrusdqgp .gt_center { text-align: center; }
+ #eavrusdqgp .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #eavrusdqgp .gt_font_normal { font-weight: normal; }
+ #eavrusdqgp .gt_font_bold { font-weight: bold; }
+ #eavrusdqgp .gt_font_italic { font-style: italic; }
+ #eavrusdqgp .gt_super { font-size: 65%; }
+ #eavrusdqgp .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #eavrusdqgp .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -486,7 +492,7 @@ Each row contains one comment.</p>
 <h2>Step 4 — Reload Processed Sentiment Data</h2>
 <p>We reload the processed results from <code>sentiment_results.csv</code>.<br>
 This ensures we always work with the cleaned dataset (<em>comment + sentiment</em>).</p>
-<div id="f7150972" class="cell" data-execution_count="5">
+<div id="8753ea4b" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sentiment_results.csv"</span>)</span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> [col.capitalize() <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
 <span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>gt.GT(df.head()).tab_options(</span>
@@ -494,53 +500,53 @@ This ensures we always work with the cleaned dataset (<em>comment + sentiment</e
 <span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>    data_row_padding<span class="op">=</span><span class="st">"15px"</span>,      <span class="co"># add more space between rows</span></span>
 <span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>    column_labels_padding<span class="op">=</span><span class="st">"10px"</span> <span class="co"># bigger headers</span></span>
 <span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<div id="hwrkeojfue" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div id="ogvnoeedbq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#hwrkeojfue table {
+#ogvnoeedbq table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#hwrkeojfue thead, tbody, tfoot, tr, td, th { border-style: none; }
+#ogvnoeedbq thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#hwrkeojfue p { margin: 0; padding: 0; }
- #hwrkeojfue .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #hwrkeojfue .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #hwrkeojfue .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #hwrkeojfue .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #hwrkeojfue .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #hwrkeojfue .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #hwrkeojfue .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #hwrkeojfue .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #hwrkeojfue .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #hwrkeojfue .gt_column_spanner_outer:first-child { padding-left: 0; }
- #hwrkeojfue .gt_column_spanner_outer:last-child { padding-right: 0; }
- #hwrkeojfue .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
- #hwrkeojfue .gt_spanner_row { border-bottom-style: hidden; }
- #hwrkeojfue .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #hwrkeojfue .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #hwrkeojfue .gt_from_md> :first-child { margin-top: 0; }
- #hwrkeojfue .gt_from_md> :last-child { margin-bottom: 0; }
- #hwrkeojfue .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #hwrkeojfue .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #hwrkeojfue .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #hwrkeojfue .gt_row_group_first td { border-top-width: 2px; }
- #hwrkeojfue .gt_row_group_first th { border-top-width: 2px; }
- #hwrkeojfue .gt_striped { background-color: rgba(128,128,128,0.05); }
- #hwrkeojfue .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #hwrkeojfue .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #hwrkeojfue .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #hwrkeojfue .gt_left { text-align: left; }
- #hwrkeojfue .gt_center { text-align: center; }
- #hwrkeojfue .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #hwrkeojfue .gt_font_normal { font-weight: normal; }
- #hwrkeojfue .gt_font_bold { font-weight: bold; }
- #hwrkeojfue .gt_font_italic { font-style: italic; }
- #hwrkeojfue .gt_super { font-size: 65%; }
- #hwrkeojfue .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #hwrkeojfue .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#ogvnoeedbq p { margin: 0; padding: 0; }
+ #ogvnoeedbq .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 30px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #ogvnoeedbq .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #ogvnoeedbq .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #ogvnoeedbq .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #ogvnoeedbq .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ogvnoeedbq .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ogvnoeedbq .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ogvnoeedbq .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #ogvnoeedbq .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #ogvnoeedbq .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #ogvnoeedbq .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #ogvnoeedbq .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 10px; padding-bottom: 10px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #ogvnoeedbq .gt_spanner_row { border-bottom-style: hidden; }
+ #ogvnoeedbq .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #ogvnoeedbq .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #ogvnoeedbq .gt_from_md> :first-child { margin-top: 0; }
+ #ogvnoeedbq .gt_from_md> :last-child { margin-bottom: 0; }
+ #ogvnoeedbq .gt_row { padding-top: 15px; padding-bottom: 15px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #ogvnoeedbq .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #ogvnoeedbq .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #ogvnoeedbq .gt_row_group_first td { border-top-width: 2px; }
+ #ogvnoeedbq .gt_row_group_first th { border-top-width: 2px; }
+ #ogvnoeedbq .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #ogvnoeedbq .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ogvnoeedbq .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #ogvnoeedbq .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #ogvnoeedbq .gt_left { text-align: left; }
+ #ogvnoeedbq .gt_center { text-align: center; }
+ #ogvnoeedbq .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #ogvnoeedbq .gt_font_normal { font-weight: normal; }
+ #ogvnoeedbq .gt_font_bold { font-weight: bold; }
+ #ogvnoeedbq .gt_font_italic { font-style: italic; }
+ #ogvnoeedbq .gt_super { font-size: 65%; }
+ #ogvnoeedbq .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #ogvnoeedbq .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -601,7 +607,7 @@ This ensures we always work with the cleaned dataset (<em>comment + sentiment</e
 </section>
 <section id="step-5-code-function-for-plotting" class="slide level2">
 <h2>Step 5: Code, Function for plotting</h2>
-<div id="4fd908dc" class="cell" data-fig-height="20" data-fig-width="30" data-execution_count="6">
+<div id="688dbe5a" class="cell" data-fig-height="20" data-fig-width="30" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_sentiment_distribution(df, column<span class="op">=</span><span class="st">'Sentiment'</span>):</span>
@@ -630,7 +636,7 @@ This ensures we always work with the cleaned dataset (<em>comment + sentiment</e
 </section>
 <section id="step-5-bar-chart" class="slide level2">
 <h2>Step 5: Bar Chart</h2>
-<div id="837e19a4" class="cell" data-execution_count="7">
+<div id="e05b77c8" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>plot_sentiment_distribution(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
@@ -649,45 +655,46 @@ This ensures we always work with the cleaned dataset (<em>comment + sentiment</e
 </section>
 <section id="step-6-code" class="slide level2">
 <h2>Step 6: Code</h2>
-<div id="08a06ddb" class="cell" data-execution_count="8">
+<div id="5815568f" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="op">=</span> df[<span class="st">'Sentiment'</span>].value_counts()</span>
 <span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"""</span></span>
-<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Here are the sentiment counts from customer comments:</span></span>
-<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>sentiment_counts<span class="sc">.</span>to_dict()<span class="sc">}</span></span>
-<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Write a short summary of these results.</span></span>
-<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Use the exact numbers given (do not approximate).</span></span>
-<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Mention Positive, Negative, and Neutral counts explicitly.</span></span>
-<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Keep the explanation concise.</span></span>
-<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add an interpretation of each number</span></span>
-<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add a conclosion sentence at the end.</span></span>
-<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
-<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> chat(model<span class="op">=</span><span class="st">"gpt-oss:20b"</span>, messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
-<span id="cb8-16"><a href="" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> response[<span class="st">'message'</span>][<span class="st">'content'</span>]</span>
-<span id="cb8-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">''' </span></span>
-<span id="cb8-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Clean the summary text ---</span></span>
-<span id="cb8-20"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = summary</span></span>
-<span id="cb8-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"</span><span class="er">\</span><span class="co">*</span><span class="er">\</span><span class="co">*(.*?)</span><span class="er">\</span><span class="co">*</span><span class="er">\</span><span class="co">*", r"</span><span class="ch">\1</span><span class="co">", clean_summary)  # remove bold markdown</span></span>
-<span id="cb8-22"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"[≈~]", "", clean_summary)              # remove symbols</span></span>
-<span id="cb8-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"</span><span class="er">\</span><span class="co">s+", " ", clean_summary).strip()      # normalize spaces</span></span>
-<span id="cb8-24"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span> </span>
-<span id="cb8-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove common dash variations and extra spaces</span></span>
-<span id="cb8-26"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="pp">[–—-]</span><span class="vs">"</span>, <span class="st">" "</span>, summary)   <span class="co"># replace -, –, — with space</span></span>
-<span id="cb8-27"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, clean_summary).strip()  <span class="co"># normalize spaces</span></span>
-<span id="cb8-28"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-29"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap for display</span></span>
-<span id="cb8-30"><a href="" aria-hidden="true" tabindex="-1"></a>wrapped_summary <span class="op">=</span> textwrap.fill(clean_summary, width<span class="op">=</span><span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">You are a research assistant in summarizing the results of a sentiment analysis task. </span></span>
+<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Here are the sentiment counts from customer comments:</span></span>
+<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>sentiment_counts<span class="sc">.</span>to_dict()<span class="sc">}</span></span>
+<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">Write a short summary of these results.</span></span>
+<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Use the exact numbers given (do not approximate).</span></span>
+<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Mention Positive, Negative, and Neutral counts explicitly.</span></span>
+<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Keep the explanation concise.</span></span>
+<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add an interpretation of each number</span></span>
+<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">- Add a conclosion sentence at the end.</span></span>
+<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
+<span id="cb8-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> chat(model<span class="op">=</span><span class="st">"gpt-oss:20b"</span>, messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
+<span id="cb8-17"><a href="" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> response[<span class="st">'message'</span>][<span class="st">'content'</span>]</span>
+<span id="cb8-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">''' </span></span>
+<span id="cb8-20"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Clean the summary text ---</span></span>
+<span id="cb8-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = summary</span></span>
+<span id="cb8-22"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"</span><span class="er">\</span><span class="co">*</span><span class="er">\</span><span class="co">*(.*?)</span><span class="er">\</span><span class="co">*</span><span class="er">\</span><span class="co">*", r"</span><span class="ch">\1</span><span class="co">", clean_summary)  # remove bold markdown</span></span>
+<span id="cb8-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"[≈~]", "", clean_summary)              # remove symbols</span></span>
+<span id="cb8-24"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">clean_summary = re.sub(r"</span><span class="er">\</span><span class="co">s+", " ", clean_summary).strip()      # normalize spaces</span></span>
+<span id="cb8-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span> </span>
+<span id="cb8-26"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove common dash variations and extra spaces</span></span>
+<span id="cb8-27"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="pp">[–—-]</span><span class="vs">"</span>, <span class="st">" "</span>, summary)   <span class="co"># replace -, –, — with space</span></span>
+<span id="cb8-28"><a href="" aria-hidden="true" tabindex="-1"></a>clean_summary <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, clean_summary).strip()  <span class="co"># normalize spaces</span></span>
+<span id="cb8-29"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap for display</span></span>
+<span id="cb8-31"><a href="" aria-hidden="true" tabindex="-1"></a>wrapped_summary <span class="op">=</span> textwrap.fill(clean_summary, width<span class="op">=</span><span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-6-summary-of-results" class="slide level2">
 <h2>Step 6: Summary of Results</h2>
-<div id="9bad3b6c" class="cell" data-execution_count="9">
+<div id="d277ffd9" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>display(Markdown(wrapped_summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown">
-<p>The customer comments resulted in the following counts: <strong>Positive: 5</strong>, <strong>Negative: 3</strong>, <strong>Neutral: 2</strong>. <strong>Positive (5)</strong> indicates that the majority of feedback reflects satisfaction or approval, showing strong support for the product or service. <strong>Negative (3)</strong> shows a notable but smaller group of concerns or complaints that may warrant further investigation or improvement. <strong>Neutral (2)</strong> represents comments that are neither clearly positive nor negative, suggesting a small portion of customers who are indifferent or simply reporting facts. <strong>Conclusion:</strong> Overall, the feedback leans positively, with more favorable comments than adverse ones.</p>
+<p>The sentiment analysis identified <strong>5 Positive</strong>, <strong>3 Negative</strong>, and <strong>2 Neutral</strong> customer comments. <strong>5 Positive</strong> indicates that the majority of feedback is favorable, suggesting strong approval or satisfaction. <strong>3 Negative</strong> shows a smaller, but noticeable, portion of dissatisfaction that may warrant further investigation. <strong>2 Neutral</strong> reflects a minimal number of comments that neither praise nor criticize, implying limited ambivalence. In conclusion, the overall sentiment leans toward positive, with moderate negative feedback and few neutral remarks.</p>
 </div>
 </div>
 </section>
